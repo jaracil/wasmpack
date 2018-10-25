@@ -2,7 +2,7 @@
 Go wasm to standalone Javascript compressor.
 Generates a JS file containing the compressed wasm file and all Go bootstrap JS code.
 
-# Why?
+## Why?
 We needed to distribute a Go wasm program in a single JS file.
 
 ## Install
