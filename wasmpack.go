@@ -267,7 +267,7 @@ Ll9pbnN0LmV4cG9ydHMucnVuKCkpfSksZS5ydW4odC5pbnN0YW5jZSkpKS5jYXRjaChlPT57dGhy
 b3cgZX0pfX0pKCk7Cg==`
 
 var opts struct {
-	InputFile string `short:"i" long:"input" description:"JS input file"`
+	InputFile string `short:"i" long:"input" description:"WASM input file"`
 }
 
 func genCode(s string) string {
