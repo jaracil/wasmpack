@@ -81,12 +81,8 @@ func main() {
 %s
 %s
 var go = new Go();
-console.log("Before inflate", Date.now());
-_bytes = new Zlib.RawInflate(base64js.toByteArray("%s")).decompress();
-console.log("After inflate", Date.now());
 window.onload = function(){
-	WebAssembly.instantiate(_bytes , go.importObject).then(function(results){
-		console.log("After instantiate", Date.now());
+	WebAssembly.instantiate(new Zlib.RawInflate(base64js.toByteArray("%s")).decompress() , go.importObject).then(function(results){
 		go.run(results.instance);
 	});
 };
