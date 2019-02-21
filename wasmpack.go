@@ -1,3 +1,5 @@
+//go:generate go run gen/gen.go
+
 package main
 
 import (
@@ -10,12 +12,6 @@ import (
 
 	"github.com/jessevdk/go-flags"
 )
-
-var base64Code = `{{ .Base64Code }}`
-
-var inflateCode = `{{ .InflateCode }}`
-
-var bootstrapCode = `{{ .BootStrapCode }}`
 
 var opts struct {
 	InputFile string `short:"i" long:"input" description:"WASM input file"`
