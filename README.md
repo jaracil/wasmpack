@@ -1,19 +1,24 @@
 # wasmpack
-Go wasm to standalone Javascript compressor.
-Generates a JS file containing the compressed wasm file and all Go bootstrap JS code.
+Go wasm to standalone Javascript file.
+Generates a JS file containing the compressed wasm file and all Go bootstrap JS code to execute in browser and node.js environments.
 
 ## Why?
 We needed to distribute a Go wasm program in a single JS file.
 
 ## Install
 ```
-go get github.com/jaracil/wasmpack
-go generate $GOPATH/src/github.com/jaracil/wasmpack
-go install $GOPATH/src/github.com/jaracil/wasmpack
+go get -u github.com/jaracil/wasmpack
+```
+
+If you modify base64.js, inflate.js or wasm_exec.js then execute:
+```
+go generate
+go install
 ```
 
 ## Usage
 ```
-wasmpack -i wasm_file > javascript_file
+wasmpack -i file.wasm > file.js
+node file.js
 ```
 
