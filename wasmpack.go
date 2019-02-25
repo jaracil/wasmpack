@@ -15,6 +15,7 @@ import (
 
 var opts struct {
 	InputFile string `short:"i" long:"input" description:"WASM input file"`
+	NoBrowser bool   `short:"n" long:"nobrowser" description:"Exclude browser specific libraries"`
 }
 
 func genCode(s string) string {
@@ -63,19 +64,34 @@ func main() {
 	}
 	def.Close()
 	b64str := base64.StdEncoding.EncodeToString(buf.Bytes())
+	if opts.NoBrowser {
+		base64Code = ""
+		inflateCode = ""
+	}
 
 	fmt.Fprintf(os.Stdout,
-		`/* Compressed with wasmpack [https://github.com/jaracil/wasmpack.git] */
+		`/* Packed with wasmpack [https://github.com/jaracil/wasmpack.git] */
 
 %s
 %s
 %s
+var b64Code = "%s"
 var go = new Go();
-window.onload = function(){
-	WebAssembly.instantiate(new Zlib.RawInflate(base64js.toByteArray("%s")).decompress() , go.importObject).then(function(results){
+if (typeof process !== "undefined") {
+	const zl = require("zlib")
+	WebAssembly.instantiate(zl.inflateRawSync(Buffer.from(b64Code, 'base64')), go.importObject).then(function(results){
 		go.run(results.instance);
+		b64Code = undefined;
 	});
-};
+
+} else {
+	window.onload = function(){
+		WebAssembly.instantiate(new Zlib.RawInflate(base64js.toByteArray(b64Code)).decompress() , go.importObject).then(function(results){
+			go.run(results.instance);
+			b64Code = undefined;
+		});
+	};
+}
 `,
 		genCode(base64Code),
 		genCode(inflateCode),
